@@ -170,11 +170,64 @@
       </subsection>
 
       <subsection name="Examples" id="AbbreviationAsWordInName_Examples">
-       <p>
-         Default configuration
-       </p>
+       <p>To configure the check:</p>
        <source>
 &lt;module name="AbbreviationAsWordInName"/&gt;
+       </source>
+       <p>Example:</p>
+       <source>
+public class MyClass extends SuperClass { // OK, camel case
+  int CURRENT_COUNTER; // violation, at most 4 consecutive capital letters allowed
+  static int GLOBAL_COUNTER; // OK, static is ignored
+  final Set&lt;String&gt; stringsFOUND = new HashSet&lt;&gt;(); // OK, final is ignored
+
+  &#64;Override
+  void printCOUNTER() { // OK, overridden method is ignored
+    System.out.println(CURRENT_COUNTER); // OK, only definitions are checked
+  }
+
+  void incrementCOUNTER() { // violation, at most 4 consecutive capital letters allowed
+    CURRENT_COUNTER++; // OK, only definitions are checked
+  }
+
+  static void incrementGLOBAL() { // violation, static method is not ignored
+    GLOBAL_COUNTER++; // OK, only definitions are checked
+  }
+
+}
+       </source>
+       <p>
+         To configure to include static variables and
+         methods tagged with <code>@Override</code> annotation.
+       </p>
+       <p>Configuration:</p>
+       <source>
+&lt;module name="AbbreviationAsWordInName"&gt;
+  &lt;property name="ignoreStatic" value="false"/&gt;
+  &lt;property name="ignoreOverriddenMethods" value="false"/&gt;
+&lt;/module&gt;
+       </source>
+       <p>Example:</p>
+       <source>
+public class MyClass extends SuperClass { // OK, camel case
+  int CURRENT_COUNTER; // violation, at most 4 consecutive capital letters allowed
+  static int GLOBAL_COUNTER; // violation, static is not ignored
+  final Set&lt;String&gt; stringsFOUND = new HashSet&lt;&gt;(); // OK, final is ignored
+
+  &#64;Override
+  void printCOUNTER() { // violation, overridden method is not ignored
+    System.out.println(CURRENT_COUNTER); // OK, only definitions are checked
+  }
+
+  void incrementCOUNTER() { // violation, at most 4 consecutive capital letters allowed
+    CURRENT_COUNTER++; // OK, only definitions are checked
+  }
+
+  static void incrementGLOBAL() { // violation, at most 4 consecutive capital letters allowed
+    GLOBAL_COUNTER++; // OK, only definitions are checked
+  }
+
+}
        </source>
        <p>
           To configure to check all variables and identifiers
@@ -486,6 +539,38 @@ class AbstractThirdClass {} // OK, no "abstract" modifier
         <source>
 &lt;module name=&quot;CatchParameterName&quot;/&gt;
         </source>
+        <p>Example:
+        </p>
+        <source>
+public class MyTest {
+  public void myTest() {
+    try {
+      // ...
+    } catch (ArithmeticException e) { // OK
+      // ...
+    } catch (ArrayIndexOutOfBoundsException ex) { // OK
+      // ...
+    } catch (Throwable t) { // OK
+      // ...
+    } catch (IndexOutOfBoundsException e123) { // violation, digits
+                                               // not allowed
+      // ...
+    } catch (NullPointerException ab) { // violation, should have at least
+                                        // three characters if not e|t|ex
+      // ...
+    } catch (ArrayStoreException abc) { // OK
+      // ...
+    } catch (InterruptedException aBC) { // violation, first two characters
+                                         // should be in lowercase
+      // ...
+    } catch (RuntimeException abC) { // OK
+      // ...
+    } catch (Exception abCD) { // OK
+      // ...
+    }
+  }
+}
+        </source>
         <p>
           An example of how to configure the check for names that begin with
           a lower case letter, followed by any letters or digits is:
@@ -502,11 +587,11 @@ public class MyTest {
   public void myTest() {
     try {
       // ...
-    } catch (ArithmeticException ex) { //OK
+    } catch (ArithmeticException ex) { // OK
       // ...
-    } catch (ArrayIndexOutOfBoundsException ex2) { //OK
+    } catch (ArrayIndexOutOfBoundsException ex2) { // OK
       // ...
-    } catch (IOException thirdException) { //OK
+    } catch (IOException thirdException) { // OK
       // ...
     } catch (Exception FourthException) { // violation, the initial letter
                                           // should be lowercase

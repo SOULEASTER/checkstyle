@@ -44,12 +44,6 @@ import com.puppycrawl.tools.checkstyle.utils.FilterUtil;
  * </p>
  * <ul id="SuppressionXpathFilter_IncompatibleChecks">
  * <li>
- * AvoidEscapedUnicodeCharacters
- * </li>
- * <li>
- * CommentsIndentation
- * </li>
- * <li>
  * CustomImportOrder
  * </li>
  * <li>
@@ -59,19 +53,18 @@ import com.puppycrawl.tools.checkstyle.utils.FilterUtil;
  * Indentation
  * </li>
  * <li>
- * InterfaceMemberImpliedModifier
- * </li>
- * <li>
  * JavadocMethod
  * </li>
  * <li>
  * MissingJavadocType
  * </li>
  * <li>
- * Regexp
+ * Regexp (reason is at
+ * <a href="https://github.com/checkstyle/checkstyle/issues/7759#issuecomment-605525287"> #7759</a>)
  * </li>
  * <li>
- * RegexpSinglelineJava
+ * RegexpSinglelineJava (reason is at
+ * <a href="https://github.com/checkstyle/checkstyle/issues/7759#issuecomment-605525287"> #7759</a>)
  * </li>
  * <li>
  * TodoComment
@@ -84,15 +77,6 @@ import com.puppycrawl.tools.checkstyle.utils.FilterUtil;
  * </li>
  * <li>
  * VariableDeclarationUsageDistance
- * </li>
- * </ul>
- * <p>
- * Certain Checks are partially supported by the filter:
- * </p>
- * <ul>
- * <li>
- * PackageDeclaration (until
- * <a href="https://github.com/checkstyle/checkstyle/pull/8110">#8110</a>)
  * </li>
  * </ul>
  * <p>
